@@ -12,9 +12,6 @@
 const CGFloat minScale = 1.f;
 const CGFloat maxScale = 2.5f;
 
-#define VIEW_WIDTH self.view.frame.size.width
-#define VIEW_HEIGHT self.view.frame.size.height
-
 @interface ReviewImageViewController (){
     CGPoint _startPoint;
     CGPoint scaleCenter;
@@ -90,7 +87,7 @@ const CGFloat maxScale = 2.5f;
     
     //************* scrollview *******************************/
     
-    _reviewImageView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, VIEW_WIDTH, VIEW_HEIGHT)];
+    _reviewImageView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     _reviewImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _reviewImageView.bounces = YES;
     _reviewImageView.contentSize = CGSizeMake(self.view.frame.size.width + 1, self.view.frame.size.height + 1);
@@ -103,17 +100,12 @@ const CGFloat maxScale = 2.5f;
     
     //**************** ImageView *******************************/
     
-    _ImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, VIEW_WIDTH, VIEW_HEIGHT)];
-    _url = [[NSURL alloc] initWithString:@"http://www.jingan.gov.cn/newscenter/jobnews/201410/W020141024576266359059.jpg"];
-    NSData *data = [[NSData alloc] initWithContentsOfURL:_url];
-    _ImageView.image = [UIImage imageWithData:data];
-//    _ImageView.image = [UIImage imageNamed:@"5.png"];
-    
-    CGSize ImageSize = _ImageView.image.size;
-    if (ImageSize.height < VIEW_HEIGHT) {
-        _ImageView.frame = CGRectMake(0, (VIEW_HEIGHT - ImageSize.height)/2, VIEW_WIDTH, ImageSize.height);
-    }
- 
+    _ImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, _reviewImageView.frame.size.width, _reviewImageView.frame.size.height)];
+//    _url = [[NSURL alloc] initWithString:@"http://www.jingan.gov.cn/newscenter/jobnews/201410/W020141024576266359059.jpg"];
+//    NSData *data = [[NSData alloc] initWithContentsOfURL:_url];
+//    _ImageView.image = [UIImage imageWithData:data];
+    _ImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    _ImageView.image = [UIImage imageNamed:@"5.png"];
     [_reviewImageView addSubview:_ImageView];
     
     //******************* toolbar *******************************/
