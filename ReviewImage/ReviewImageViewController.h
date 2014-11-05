@@ -8,12 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ReviewImageViewController : UIViewController<UIGestureRecognizerDelegate,UIScrollViewDelegate> {
-    UIScrollView *_reviewImageView;
-    UIImageView *_ImageView;
-    UIToolbar *_toolBar;
-}
+@interface ReviewImageViewController : UIViewController<UIGestureRecognizerDelegate,UIScrollViewDelegate>
 
-@property (nonatomic, retain) NSURL *url;
+@property (nonatomic, readonly) UIScrollView *scrollView;
+@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) UIImage *image;
+@property (nonatomic, readonly) BOOL isViewing;
 
 @end

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1B9F5E721A008292000A4B22 /* clearBG.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B9F5E711A008292000A4B22 /* clearBG.png */; };
-		1B9F5E741A008DCB000A4B22 /* 5.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B9F5E731A008DCB000A4B22 /* 5.png */; };
 		1B9F5E771A009C63000A4B22 /* zoomIn.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B9F5E751A009C63000A4B22 /* zoomIn.png */; };
 		1B9F5E781A009C63000A4B22 /* zoomOut.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B9F5E761A009C63000A4B22 /* zoomOut.png */; };
 		1B9F5E7B1A00A392000A4B22 /* leftRotation.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B9F5E791A00A392000A4B22 /* leftRotation.png */; };
@@ -42,7 +41,6 @@
 
 /* Begin PBXFileReference section */
 		1B9F5E711A008292000A4B22 /* clearBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clearBG.png; sourceTree = "<group>"; };
-		1B9F5E731A008DCB000A4B22 /* 5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 5.png; sourceTree = "<group>"; };
 		1B9F5E751A009C63000A4B22 /* zoomIn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zoomIn.png; sourceTree = "<group>"; };
 		1B9F5E761A009C63000A4B22 /* zoomOut.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zoomOut.png; sourceTree = "<group>"; };
 		1B9F5E791A00A392000A4B22 /* leftRotation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = leftRotation.png; sourceTree = "<group>"; };
@@ -97,7 +95,6 @@
 		1BA2C42C19FF972C00714190 /* image */ = {
 			isa = PBXGroup;
 			children = (
-				1B9F5E731A008DCB000A4B22 /* 5.png */,
 				1B9F5E711A008292000A4B22 /* clearBG.png */,
 				1B9F5E751A009C63000A4B22 /* zoomIn.png */,
 				1B9F5E761A009C63000A4B22 /* zoomOut.png */,
@@ -258,7 +255,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1B9F5E741A008DCB000A4B22 /* 5.png in Resources */,
 				1BD213F319FE193900EA3C91 /* InfoPlist.strings in Resources */,
 				1BB4D8651A021824004A2A89 /* save.png in Resources */,
 				1B9F5E7C1A00A392000A4B22 /* rightRotation.png in Resources */,
