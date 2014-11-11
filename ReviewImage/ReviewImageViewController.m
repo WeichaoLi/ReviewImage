@@ -8,7 +8,8 @@
 
 #import "ReviewImageViewController.h"
 
-
+#define __IPHONE_SYSTEM_VERSION [[UIDevice currentDevice] systemVersion].floatValue
+#define IOS7 __IPHONE_SYSTEM_VERSION > 7.0
 
 @interface ReviewImageViewController ()
 
@@ -19,11 +20,10 @@
 @end
 
 @implementation ReviewImageViewController {
+    UIInterfaceOrientation _fromInterfaceOrientation;
+    UIInterfaceOrientation _toInterfaceOrientation;
     
     UILabel *promptLable;  //提示
-    
-    BOOL isProtrait; //
-    
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -65,6 +65,7 @@
     _scrollView.delegate = self;
     
     _containerView = [[UIView alloc] initWithFrame:self.view.bounds];
+    _containerView.backgroundColor = [UIColor yellowColor];
     [_scrollView addSubview:_containerView];
     
     [self.view addSubview:_scrollView];
@@ -86,6 +87,8 @@
         
         NSArray *Items = @[leftRotate,flexibleSpace,zoomOut,flexibleSpace,zoomIn,flexibleSpace,rightRotate,flexibleSpace,Save];
         [_toolBar setItems:Items animated:YES];
+        
+        _toolBar.tintColor = [UIColor orangeColor];
     }
     [self.view insertSubview:_toolBar aboveSubview:_containerView];
     
@@ -105,15 +108,47 @@
     
     /****************************初始化***************************/
     
-    isProtrait = YES;
+    _imageOrientation = ImageOrientationPortrait;
     
-    UIImageView *imageView = [[UIImageView alloc] init];
-    NSURL *_url = [[NSURL alloc] initWithString:@"http://www.jingan.gov.cn/newscenter/jobnews/201410/W020141024576266359059.jpg"];
-    NSData *data = [[NSData alloc] initWithContentsOfURL:_url];
-    imageView.image = [UIImage imageWithData:data];
-    
-    self.imageView = imageView;
+//    UIImage *image = [[UIImage alloc] init];
+//    NSData *data = [NSData data];
+//    
+//    NSString *nspath = [[NSArray arrayWithObjects:NSHomeDirectory(), @"Documents", @"demo.png", nil]
+//                        componentsJoinedByString:@"/"];
+//    
+//    NSFileManager *filemanager = [[NSFileManager alloc] init];
+//	if ([filemanager fileExistsAtPath:nspath]) {
+//		data = [NSData dataWithContentsOfFile:nspath];
+//        
+//	}else {
+//        NSURL *_url = [[NSURL alloc] initWithString:@"http://www.jingan.gov.cn/newscenter/jobnews/201410/W020141024576266359059.jpg"];
+//        data = [[NSData alloc] initWithContentsOfURL:_url];
+//        
+//        NSThread *thread = [[NSThread alloc] initWithTarget:self selector:@selector(saveImageToBOXWithPath:) object:data];
+//        [thread start];
+//    }
+//    
+//    image = [UIImage imageWithData:data];
+//    self.imageView = [[UIImageView alloc] initWithImage:image];
     [self imageDidChange];
+    
+    [NSThread detachNewThreadSelector:@selector(loadImage) toTarget:self withObject:nil];
+}
+
+- (void)loadImage {
+    UIImage *image = [[UIImage alloc] init];
+    NSData *data = [NSData data];
+    NSURL *_url = [[NSURL alloc] initWithString:@"http://www.jingan.gov.cn/newscenter/jobnews/201410/W020141024576266359059.jpg"];
+    data = [[NSData alloc] initWithContentsOfURL:_url];
+    image = [UIImage imageWithData:data];
+    self.imageView = [[UIImageView alloc] initWithImage:image];
+    [self imageDidChange];
+}
+
+- (void)saveImageToBOXWithPath:(NSData *)data {
+    NSString *path = [[NSArray arrayWithObjects:NSHomeDirectory(), @"Documents", @"demo.png", nil]
+                        componentsJoinedByString:@"/"];
+    [data writeToFile:path atomically:YES];
 }
 
 #pragma mark- Properties
@@ -159,39 +194,33 @@
 #pragma mark - 当图片改变:例如旋转
 
 - (void)imageDidChange {
+        
+    CGSize size = (self.imageView.image) ? self.imageView.image.size : self.view.bounds.size;
+    CGFloat ratio;
     
-    if (isProtrait) { //判断图片是不是正的
-        
-        CGSize size = (self.imageView.image) ? self.imageView.image.size : self.view.bounds.size;
-        CGFloat ratio = MIN(_scrollView.frame.size.width / size.width, _scrollView.frame.size.height / size.height);
-        CGFloat W = ratio * size.width;
-        CGFloat H = ratio * size.height;
-        self.imageView.frame = CGRectMake(0, 0, W, H);
-        
-        _scrollView.zoomScale = 1;
-        _scrollView.contentOffset = CGPointZero;
-        _containerView.bounds = _imageView.bounds;
-        
-        [self resetZoomScale];
-        _scrollView.zoomScale  = _scrollView.minimumZoomScale;
-        [self scrollViewDidZoom:_scrollView];
-        
+    if (_imageOrientation == ImageOrientationPortrait || _imageOrientation == ImageOrientationPortraitUpsideDown) { //判断图片是不是正的
+        ratio = MIN(_scrollView.frame.size.width / size.width, _scrollView.frame.size.height / size.height);
     }else {
-        
-        CGSize size = (self.imageView.image) ? self.imageView.image.size : self.view.bounds.size;
-        CGFloat ratio = MIN(_scrollView.frame.size.width / size.height, _scrollView.frame.size.height / size.width);
-        CGFloat W = ratio * size.width;
-        CGFloat H = ratio * size.height;
-        self.imageView.frame = CGRectMake(0, 0, W, H);
-        
-        _scrollView.zoomScale = 1;
-        _scrollView.contentOffset = CGPointZero;
-        _containerView.bounds = _imageView.bounds;
-        
-        [self resetZoomScale];
-        _scrollView.zoomScale  = _scrollView.minimumZoomScale;
-        [self scrollViewDidZoom:_scrollView];
-    }
+        ratio = MIN(_scrollView.frame.size.width / size.height, _scrollView.frame.size.height / size.width);
+    }    
+    
+    CGFloat W = ratio * size.width;
+    CGFloat H = ratio * size.height;
+    self.imageView.frame = CGRectMake(0, 0, W, H);
+
+    _scrollView.zoomScale = 1;
+    _scrollView.contentOffset = CGPointZero;
+    _containerView.bounds = _imageView.bounds;
+
+    [self resetZoomScale];
+    _scrollView.zoomScale  = _scrollView.minimumZoomScale;
+    [self scrollViewDidZoom:_scrollView];
+    
+    _imageView.frame = _containerView.bounds;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    _scrollView.bounds = self.view.bounds;
 }
 
 #pragma mark- Scrollview delegate
@@ -211,6 +240,10 @@
     rct.origin.x = MAX((Ws-W)/2, 0);
     rct.origin.y = MAX((Hs-H)/2, 0);
     _containerView.frame = rct;
+    
+    if (scrollView.zoomScale >= scrollView.maximumZoomScale) {
+        [self showPrompt:@"已放大到最大比例"];
+    }
 }
 
 - (void)resetZoomScale {
@@ -219,7 +252,7 @@
     
     CGFloat scale = 1;
     
-    if (isProtrait) {
+    if (_imageOrientation == ImageOrientationPortrait || _imageOrientation == ImageOrientationPortraitUpsideDown) {
         Rw = MAX(Rw, _imageView.image.size.width / (scale * _scrollView.frame.size.width));
         Rh = MAX(Rh, _imageView.image.size.height / (scale * _scrollView.frame.size.height));
     }else {
@@ -237,8 +270,16 @@
 - (void)handleTap:(UITapGestureRecognizer *)gesture {
     if (self.navigationController.navigationBarHidden) {
         self.navigationController.navigationBarHidden = NO;
+        _toolBar.hidden = NO;
+//        self.view.backgroundColor = [UIColor whiteColor];
     }else {
         self.navigationController.navigationBarHidden = YES;
+        _toolBar.hidden = YES;
+//        self.view.backgroundColor = [UIColor blackColor];
+    }
+    
+    if (_scrollView.bounds.origin.x == 0) {
+        _scrollView.bounds = self.view.bounds;
     }
 }
 
@@ -266,20 +307,52 @@
     
     _imageView.transform = CGAffineTransformRotate(_imageView.transform, - M_PI_2);
     
-    isProtrait = isProtrait ? NO : YES;
+    switch (_imageOrientation) {
+        case ImageOrientationPortrait:
+            _imageOrientation = ImageOrientationLandScapeLeft;
+            break;
+        case ImageOrientationLandScapeLeft:
+            _imageOrientation = ImageOrientationPortraitUpsideDown;
+            break;
+        case ImageOrientationLandScapeRight:
+            _imageOrientation = ImageOrientationPortrait;
+            break;
+        case ImageOrientationPortraitUpsideDown:
+            _imageOrientation = ImageOrientationLandScapeRight;
+            break;
+            
+        default:
+            break;
+    }
     
     [self imageDidChange];
-    _imageView.frame = _containerView.bounds;
+//    _imageView.frame = _containerView.bounds;
 }
 
 - (void)rightRotation {
     
     _imageView.transform = CGAffineTransformRotate(_imageView.transform, M_PI_2);
     
-    isProtrait = isProtrait ? NO : YES;
+    switch (_imageOrientation) {
+        case ImageOrientationPortrait:
+            _imageOrientation = ImageOrientationLandScapeRight;
+            break;
+        case ImageOrientationLandScapeLeft:
+            _imageOrientation = ImageOrientationPortrait;
+            break;
+        case ImageOrientationLandScapeRight:
+            _imageOrientation = ImageOrientationPortraitUpsideDown;
+            break;
+        case ImageOrientationPortraitUpsideDown:
+            _imageOrientation = ImageOrientationLandScapeLeft;
+            break;
+            
+        default:
+            break;
+    }
     
     [self imageDidChange];
-    _imageView.frame = _containerView.bounds;
+//    _imageView.frame = _containerView.bounds;
 }
 
 - (void)zoomOut {
@@ -360,5 +433,28 @@
 - (void)hiddenPrompt {
     promptLable.hidden = YES;
 }
+
+#pragma mark - Rotation
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    _toInterfaceOrientation = toInterfaceOrientation;
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+//    _fromInterfaceOrientation = fromInterfaceOrientation;
+//    if (fromInterfaceOrientation == (UIInterfaceOrientation)_imageOrientation) {
+//        _imageOrientation = (ImageOrientation)_toInterfaceOrientation;
+//    }
+//    [self imageDidChange];
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+//    if (_fromInterfaceOrientation == (UIInterfaceOrientation)_imageOrientation) {
+//        _imageOrientation = (ImageOrientation)_toInterfaceOrientation;
+//    }
+    [self imageDidChange];
+    
+}
+
 
 @end

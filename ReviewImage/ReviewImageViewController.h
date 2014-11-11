@@ -8,10 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger, ImageOrientation) {
+    ImageOrientationPortrait = UIInterfaceOrientationPortrait,
+    ImageOrientationLandScapeLeft = UIInterfaceOrientationLandscapeLeft,
+    ImageOrientationLandScapeRight = UIInterfaceOrientationLandscapeRight,
+    ImageOrientationPortraitUpsideDown = UIInterfaceOrientationPortraitUpsideDown,
+};
+
 @interface ReviewImageViewController : UIViewController<UIGestureRecognizerDelegate,UIScrollViewDelegate>
 
 @property (nonatomic, readonly) UIScrollView *scrollView;
 @property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, assign) ImageOrientation imageOrientation;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, readonly) BOOL isViewing;
 
