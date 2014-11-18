@@ -412,7 +412,7 @@
 //    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hiddenPrompt) object:nil];  //取消事件
     if (promptLable == nil) {
         promptLable = [[UILabel alloc] initWithFrame:CGRectMake((self.view.frame.size.width - 180)/2, self.view.frame.size.height - 100, 180, 40)];
-        promptLable.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+        promptLable.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
         promptLable.backgroundColor = [UIColor blackColor];
         promptLable.textAlignment = NSTextAlignmentCenter;
         promptLable.textColor = [UIColor whiteColor];

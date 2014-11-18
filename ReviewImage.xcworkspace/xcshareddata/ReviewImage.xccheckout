@@ -5,7 +5,7 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>1A583D23-78FB-4931-A159-948604A49F5D</string>
+	<string>A20EEEE8-3B0A-4405-BD4E-73AE36F62262</string>
 	<key>IDESourceControlProjectName</key>
 	<string>ReviewImage</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
@@ -14,11 +14,11 @@
 		<string>https://github.com/WeichaoLi/ReviewImage.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>ReviewImage.xcodeproj/project.xcworkspace</string>
+	<string>ReviewImage.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>6F1871DC9387E894532A1BE8384284D73B8C7BB0</key>
-		<string>../..</string>
+		<string>..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/WeichaoLi/ReviewImage.git</string>
