@@ -7,6 +7,7 @@
 //
 
 #import "ReviewImageViewController.h"
+#import "SVProgressHUD.h"
 
 #define __IPHONE_SYSTEM_VERSION [[UIDevice currentDevice] systemVersion].floatValue
 #define IOS7 __IPHONE_SYSTEM_VERSION > 7.0
@@ -24,6 +25,7 @@
     UIInterfaceOrientation _toInterfaceOrientation;
     
     UILabel *promptLable;  //提示
+    NSString *ImageTracePath;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -41,6 +43,14 @@
     // Do any additional setup after loading the view.
     
     self.view.backgroundColor = [UIColor blackColor];
+    ImageTracePath = [[NSArray arrayWithObjects:NSHomeDirectory(), @"Documents", @"ImageTrace", nil]
+                                       componentsJoinedByString:@"/"];
+    NSFileManager *fileManager = [[NSFileManager alloc] init];
+    if (![fileManager fileExistsAtPath:ImageTracePath]) {
+        [fileManager createDirectoryAtPath:ImageTracePath withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    ImageTracePath = [ImageTracePath stringByAppendingString:@"/trace.plist"];
+    NSLog(@"%@",ImageTracePath);
 }
 
 - (void)didReceiveMemoryWarning
@@ -90,6 +100,7 @@
         
         _toolBar.tintColor = [UIColor orangeColor];
     }
+    [_toolBar setUserInteractionEnabled:NO];
     [self.view insertSubview:_toolBar aboveSubview:_containerView];
     
     /****************************手势***************************/
@@ -138,11 +149,15 @@
 - (void)loadImage {
     UIImage *image = [[UIImage alloc] init];
     NSData *data = [NSData data];
-    NSURL *_url = [[NSURL alloc] initWithString:@"http://www.jingan.gov.cn/newscenter/jobnews/201410/W020141024576266359059.jpg"];
+    if (!_ImageURL) {
+        _ImageURL = @"http://www.jingan.gov.cn/newscenter/jobnews/201410/W020141024576266359059.jpg";
+    }
+    NSURL *_url = [[NSURL alloc] initWithString:_ImageURL];
     data = [[NSData alloc] initWithContentsOfURL:_url];
     image = [UIImage imageWithData:data];
     self.imageView = [[UIImageView alloc] initWithImage:image];
     [self imageDidChange];
+    [_toolBar setUserInteractionEnabled:YES];
 }
 
 - (void)saveImageToBOXWithPath:(NSData *)data {
@@ -384,6 +399,7 @@
 }
 
 - (void)savePhoto {
+    [SVProgressHUD showWithStatus:@"正在保存..."];
     /*
 //    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
 //    [library writeImageToSavedPhotosAlbum:_ImageView.image.CGImage orientation:ALAssetOrientationUp completionBlock:^(NSURL *assetURL, NSError *error) {
@@ -394,16 +410,35 @@
 //        }
 //    }];
      */
+    
+    NSMutableArray *array = [self getDataFromPath:ImageTracePath];
+    
+    if ([array containsObject:_ImageURL]) {
+        [SVProgressHUD showSuccessWithStatus:@"已保存到相册"];
+        return;
+    }
     UIImageWriteToSavedPhotosAlbum(_imageView.image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
 }
 
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
     if (error != NULL){
-        [self showPrompt:@"保存失败"];
+        [SVProgressHUD showErrorWithStatus:@"保存失败"];
     }
     else{
-        [self showPrompt:@"保存成功"];
+        NSMutableArray *array = [self getDataFromPath:ImageTracePath];
+        [array addObject:_ImageURL];
+        [array writeToFile:ImageTracePath atomically:YES];
+        
+        [SVProgressHUD showSuccessWithStatus:@"已保存到相册"];
     }
+}
+
+- (NSMutableArray *)getDataFromPath:(NSString *)path {
+    NSMutableArray *array = [NSMutableArray arrayWithContentsOfFile:ImageTracePath];
+    if (array == nil) {
+        array = [NSMutableArray array];
+    }
+    return array;
 }
 
 #pragma mark prompt

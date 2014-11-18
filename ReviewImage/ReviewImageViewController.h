@@ -17,6 +17,7 @@ typedef NS_ENUM(NSInteger, ImageOrientation) {
 
 @interface ReviewImageViewController : UIViewController<UIGestureRecognizerDelegate,UIScrollViewDelegate>
 
+@property (nonatomic, strong) NSString *ImageURL;
 @property (nonatomic, readonly) UIScrollView *scrollView;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, assign) ImageOrientation imageOrientation;

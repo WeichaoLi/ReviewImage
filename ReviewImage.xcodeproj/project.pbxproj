@@ -411,6 +411,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = "${PODS_ROOT}/**";
 			};
 			name = Debug;
 		};
@@ -442,6 +443,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = "${PODS_ROOT}/**";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -496,6 +498,7 @@
 				INFOPLIST_FILE = "ReviewImageTests/ReviewImageTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
+				USER_HEADER_SEARCH_PATHS = "${PODS_ROOT}";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -514,6 +517,7 @@
 				INFOPLIST_FILE = "ReviewImageTests/ReviewImageTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
+				USER_HEADER_SEARCH_PATHS = "${PODS_ROOT}";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
