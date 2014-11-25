@@ -21,9 +21,6 @@
 @end
 
 @implementation ReviewImageViewController {
-    UIInterfaceOrientation _fromInterfaceOrientation;
-    UIInterfaceOrientation _toInterfaceOrientation;
-    
     UILabel *promptLable;  //提示
     NSString *ImageTracePath;
 }
@@ -50,7 +47,6 @@
         [fileManager createDirectoryAtPath:ImageTracePath withIntermediateDirectories:YES attributes:nil error:nil];
     }
     ImageTracePath = [ImageTracePath stringByAppendingString:@"/trace.plist"];
-    NSLog(@"%@",ImageTracePath);
 }
 
 - (void)didReceiveMemoryWarning
@@ -98,7 +94,7 @@
         NSArray *Items = @[leftRotate,flexibleSpace,zoomOut,flexibleSpace,zoomIn,flexibleSpace,rightRotate,flexibleSpace,Save];
         [_toolBar setItems:Items animated:YES];
         
-        _toolBar.tintColor = [UIColor orangeColor];
+        _toolBar.tintColor = [UIColor whiteColor];
     }
     [_toolBar setUserInteractionEnabled:NO];
     [self.view insertSubview:_toolBar aboveSubview:_containerView];
@@ -121,28 +117,9 @@
     
     _imageOrientation = ImageOrientationPortrait;
     
-//    UIImage *image = [[UIImage alloc] init];
-//    NSData *data = [NSData data];
-//    
-//    NSString *nspath = [[NSArray arrayWithObjects:NSHomeDirectory(), @"Documents", @"demo.png", nil]
-//                        componentsJoinedByString:@"/"];
-//    
-//    NSFileManager *filemanager = [[NSFileManager alloc] init];
-//	if ([filemanager fileExistsAtPath:nspath]) {
-//		data = [NSData dataWithContentsOfFile:nspath];
-//        
-//	}else {
-//        NSURL *_url = [[NSURL alloc] initWithString:@"http://www.jingan.gov.cn/newscenter/jobnews/201410/W020141024576266359059.jpg"];
-//        data = [[NSData alloc] initWithContentsOfURL:_url];
-//        
-//        NSThread *thread = [[NSThread alloc] initWithTarget:self selector:@selector(saveImageToBOXWithPath:) object:data];
-//        [thread start];
-//    }
-//    
-//    image = [UIImage imageWithData:data];
-//    self.imageView = [[UIImageView alloc] initWithImage:image];
     [self imageDidChange];
     
+    [SVProgressHUD showWithStatus:@"加载图片中..." maskType:SVProgressHUDMaskTypeClear];
     [NSThread detachNewThreadSelector:@selector(loadImage) toTarget:self withObject:nil];
 }
 
@@ -156,29 +133,12 @@
     data = [[NSData alloc] initWithContentsOfURL:_url];
     image = [UIImage imageWithData:data];
     self.imageView = [[UIImageView alloc] initWithImage:image];
+    [SVProgressHUD dismiss];
     [self imageDidChange];
     [_toolBar setUserInteractionEnabled:YES];
 }
 
-- (void)saveImageToBOXWithPath:(NSData *)data {
-    NSString *path = [[NSArray arrayWithObjects:NSHomeDirectory(), @"Documents", @"demo.png", nil]
-                        componentsJoinedByString:@"/"];
-    [data writeToFile:path atomically:YES];
-}
-
 #pragma mark- Properties
-
-- (UIImage *)image {
-    return _imageView.image;
-}
-
-- (void)setImage:(UIImage *)image {
-    if(self.imageView == nil){
-        self.imageView = [UIImageView new];
-        self.imageView.clipsToBounds = YES;
-    }
-    self.imageView.image = image;
-}
 
 - (void)setImageView:(UIImageView *)imageView {
     if(imageView != _imageView){
@@ -200,10 +160,6 @@
         _scrollView.zoomScale  = _scrollView.minimumZoomScale;
         [self scrollViewDidZoom:_scrollView];
     }
-}
-
-- (BOOL)isViewing {
-    return (_scrollView.zoomScale != _scrollView.minimumZoomScale);
 }
 
 #pragma mark - 当图片改变:例如旋转
@@ -286,13 +242,11 @@
     if (self.navigationController.navigationBarHidden) {
         self.navigationController.navigationBarHidden = NO;
         _toolBar.hidden = NO;
-//        self.view.backgroundColor = [UIColor whiteColor];
     }else {
         self.navigationController.navigationBarHidden = YES;
         _toolBar.hidden = YES;
-//        self.view.backgroundColor = [UIColor blackColor];
     }
-    
+    [self imageDidChange];
     if (_scrollView.bounds.origin.x == 0) {
         _scrollView.bounds = self.view.bounds;
     }
@@ -400,16 +354,6 @@
 
 - (void)savePhoto {
     [SVProgressHUD showWithStatus:@"正在保存..."];
-    /*
-//    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-//    [library writeImageToSavedPhotosAlbum:_ImageView.image.CGImage orientation:ALAssetOrientationUp completionBlock:^(NSURL *assetURL, NSError *error) {
-//        if (error) {
-//            [self showPrompt:@"保存失败"];
-//        }else {
-//            [self showPrompt:@"保存成功"];
-//        }
-//    }];
-     */
     
     NSMutableArray *array = [self getDataFromPath:ImageTracePath];
     
@@ -444,7 +388,6 @@
 #pragma mark prompt
 
 - (void)showPrompt:(NSString *)message {
-//    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hiddenPrompt) object:nil];  //取消事件
     if (promptLable == nil) {
         promptLable = [[UILabel alloc] initWithFrame:CGRectMake((self.view.frame.size.width - 180)/2, self.view.frame.size.height - 100, 180, 40)];
         promptLable.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
@@ -471,22 +414,7 @@
 
 #pragma mark - Rotation
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    _toInterfaceOrientation = toInterfaceOrientation;
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-//    _fromInterfaceOrientation = fromInterfaceOrientation;
-//    if (fromInterfaceOrientation == (UIInterfaceOrientation)_imageOrientation) {
-//        _imageOrientation = (ImageOrientation)_toInterfaceOrientation;
-//    }
-//    [self imageDidChange];
-}
-
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-//    if (_fromInterfaceOrientation == (UIInterfaceOrientation)_imageOrientation) {
-//        _imageOrientation = (ImageOrientation)_toInterfaceOrientation;
-//    }
     [self imageDidChange];
     
 }

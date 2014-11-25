@@ -21,7 +21,5 @@ typedef NS_ENUM(NSInteger, ImageOrientation) {
 @property (nonatomic, readonly) UIScrollView *scrollView;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, assign) ImageOrientation imageOrientation;
-@property (nonatomic, strong) UIImage *image;
-@property (nonatomic, readonly) BOOL isViewing;
 
 @end
