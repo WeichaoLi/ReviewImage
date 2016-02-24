@@ -47,6 +47,8 @@
         [fileManager createDirectoryAtPath:ImageTracePath withIntermediateDirectories:YES attributes:nil error:nil];
     }
     ImageTracePath = [ImageTracePath stringByAppendingString:@"/trace.plist"];
+    
+    NSLog(@"%@",[fileManager URLForUbiquityContainerIdentifier:nil]);
 }
 
 - (void)didReceiveMemoryWarning
@@ -127,7 +129,7 @@
     UIImage *image = [[UIImage alloc] init];
     NSData *data = [NSData data];
     if (!_ImageURL) {
-        _ImageURL = @"http://www.jingan.gov.cn/newscenter/jobnews/201410/W020141024576266359059.jpg";
+        _ImageURL = @"http://app.jingan.gov.cn/content/xinwzx/jingan/detail/t_ca3fc91614e67ddb4e84f7f0e1372321.jpg";
     }
     NSURL *_url = [[NSURL alloc] initWithString:_ImageURL];
     data = [[NSData alloc] initWithContentsOfURL:_url];
@@ -353,6 +355,22 @@
 }
 
 - (void)savePhoto {
+    NSLog(@"%@",[[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:UBIQUITY_CONTAINER_URL]);
+    
+    dispatch_queue_t someQueue;
+    someQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(someQueue, ^{
+        
+        if (![[NSFileManager defaultManager] URLForUbiquityContainerIdentifier:nil]) {
+            NSLog(@"iCloud container not available.");
+            return;
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+        });
+        
+    });
+    
     [SVProgressHUD showWithStatus:@"正在保存..."];
     
     NSMutableArray *array = [self getDataFromPath:ImageTracePath];

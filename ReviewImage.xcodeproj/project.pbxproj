@@ -42,6 +42,7 @@
 
 /* Begin PBXFileReference section */
 		0740970C59B7706669E11402 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		1B87CD081A244D5C005DBDDB /* ReviewImage.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ReviewImage.entitlements; sourceTree = "<group>"; };
 		1B9F5E711A008292000A4B22 /* clearBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clearBG.png; sourceTree = "<group>"; };
 		1B9F5E751A009C63000A4B22 /* zoomIn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zoomIn.png; sourceTree = "<group>"; };
 		1B9F5E761A009C63000A4B22 /* zoomOut.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zoomOut.png; sourceTree = "<group>"; };
@@ -146,6 +147,7 @@
 		1BD213EE19FE193900EA3C91 /* ReviewImage */ = {
 			isa = PBXGroup;
 			children = (
+				1B87CD081A244D5C005DBDDB /* ReviewImage.entitlements */,
 				1BD213F719FE193900EA3C91 /* LWCAppDelegate.h */,
 				1BD213F819FE193900EA3C91 /* LWCAppDelegate.m */,
 				1BD2141719FE197000EA3C91 /* ReviewImageViewController.h */,
@@ -245,6 +247,14 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = LWC;
 				TargetAttributes = {
+					1BD213E419FE193900EA3C91 = {
+						DevelopmentTeam = 73STMXF95B;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
+					};
 					1BD213FF19FE193900EA3C91 = {
 						TestTargetID = 1BD213E419FE193900EA3C91;
 					};
@@ -392,7 +402,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: 伟超 李 (6MX6838A23)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -431,6 +442,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -454,11 +466,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = ReviewImage/ReviewImage.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ReviewImage/ReviewImage-Prefix.pch";
 				INFOPLIST_FILE = "ReviewImage/ReviewImage-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				USER_HEADER_SEARCH_PATHS = "${PODS_ROOT}/**";
 				WRAPPER_EXTENSION = app;
 			};
@@ -470,11 +486,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = ReviewImage/ReviewImage.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ReviewImage/ReviewImage-Prefix.pch";
 				INFOPLIST_FILE = "ReviewImage/ReviewImage-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				USER_HEADER_SEARCH_PATHS = "${PODS_ROOT}/**";
 				WRAPPER_EXTENSION = app;
 			};
